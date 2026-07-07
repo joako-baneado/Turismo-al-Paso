@@ -1,0 +1,293 @@
+{
+  "info": {
+    "_postman_id": "7c13a5a4-927b-402a-9e7f-71239c09bf87",
+    "name": "Turismo Histórico Lima - API REST",
+    "description": "Colección de pruebas para la API REST del backend de la aplicación de Turismo Histórico y Gamificación en Lima Metropolitana.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "0. Health Check (Verificar Servidor)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            ""
+          ]
+        },
+        "description": "Verifica el estado del servidor y los distritos piloto configurados."
+      },
+      "response": []
+    },
+    {
+      "name": "1. Login / Registro de Usuario",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "if (pm.response.code === 200) {",
+              "    var jsonData = pm.response.json();",
+              "    pm.globals.set(\"usuario_id\", jsonData.id);",
+              "    console.log(\"ID de usuario guardado en globales: \", jsonData.id);",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"LeonardoSolis\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/users/login",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "users",
+            "login"
+          ]
+        },
+        "description": "Inicia sesión o registra al usuario de forma automática por su nombre de usuario. Guarda el ID resultante en las variables globales de Postman."
+      },
+      "response": []
+    },
+    {
+      "name": "2. Obtener Catálogo de Hitos",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/hitos?usuarioId={{usuario_id}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "hitos"
+          ],
+          "query": [
+            {
+              "key": "usuarioId",
+              "value": "{{usuario_id}}",
+              "description": "ID del usuario para verificar qué hitos han sido visitados (bloqueo lógico)."
+            }
+          ]
+        },
+        "description": "Retorna el catálogo completo con los 50 hitos históricos. Si el hito no ha sido visitado por el usuario, su historia completa e imagenUrl se devuelven bloqueadas."
+      },
+      "response": []
+    },
+    {
+      "name": "3. Obtener Detalle de un Hito",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/hitos/1?usuarioId={{usuario_id}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "hitos",
+            "1"
+          ],
+          "query": [
+            {
+              "key": "usuarioId",
+              "value": "{{usuario_id}}"
+            }
+          ]
+        },
+        "description": "Obtiene la información detallada de un hito histórico específico aplicando el candado lógico."
+      },
+      "response": []
+    },
+    {
+      "name": "4. Registrar Visita (GPS - Éxito)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"usuarioId\": {{usuario_id}},\n  \"hitoId\": 1,\n  \"userLat\": -12.08432,\n  \"userLon\": -77.06221,\n  \"metodoVerificacion\": \"GPS\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/visitas/registrar",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "visitas",
+            "registrar"
+          ]
+        },
+        "description": "Registra la visita exitosa al hito 1 (Plaza Bolívar) al simular coordenadas muy cercanas. Suma XP y calcula si el usuario sube de nivel."
+      },
+      "response": []
+    },
+    {
+      "name": "5. Registrar Visita (GPS - Fuera de Rango)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"usuarioId\": {{usuario_id}},\n  \"hitoId\": 3,\n  \"userLat\": -12.0300,\n  \"userLon\": -77.0300,\n  \"metodoVerificacion\": \"GPS\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/visitas/registrar",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "visitas",
+            "registrar"
+          ]
+        },
+        "description": "Intenta registrar una visita al hito 3 (Taberna Queirolo) pero enviando coordenadas ubicadas en el Rímac. Retornará un código 400 informando que está fuera de rango."
+      },
+      "response": []
+    },
+    {
+      "name": "6. Registrar Visita (FOTO - Contingencia)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"usuarioId\": {{usuario_id}},\n  \"hitoId\": 3,\n  \"userLat\": -12.0300,\n  \"userLon\": -77.0300,\n  \"metodoVerificacion\": \"FOTO\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/visitas/registrar",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "visitas",
+            "registrar"
+          ]
+        },
+        "description": "Registra la visita al hito 3 forzando el método de contingencia por Fotografía (FOTO). El backend aprueba la visita y desbloquea el hito sin medir la distancia del GPS."
+      },
+      "response": []
+    },
+    {
+      "name": "7. Enviar Ping de Ubicación Anónima",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"lat\": -12.0843,\n  \"lon\": -77.0622,\n  \"sessionId\": \"session_leonardo_test\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/analytics/ping",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "analytics",
+            "ping"
+          ]
+        },
+        "description": "Envía coordenadas anónimas en segundo plano asociadas únicamente a un hash de sesión temporal."
+      },
+      "response": []
+    },
+    {
+      "name": "8. Obtener Mapa de Calor (Heatmap)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/analytics/heatmap",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "analytics",
+            "heatmap"
+          ]
+        },
+        "description": "Retorna las coordenadas anónimas agrupadas y con pesos de intensidad acumulados para la renderización de mapas de calor."
+      },
+      "response": []
+    },
+    {
+      "name": "9. Obtener Progreso del Usuario",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/users/{{usuario_id}}/progreso",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "users",
+            "{{usuario_id}}",
+            "progreso"
+          ]
+        },
+        "description": "Retorna el perfil del usuario con su nivel actual, XP total, y métricas de hitos visitados vs bloqueados."
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3000",
+      "type": "string"
+    }
+  ]
+}

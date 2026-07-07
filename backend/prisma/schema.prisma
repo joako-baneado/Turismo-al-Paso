@@ -1,0 +1,58 @@
+// prisma/schema.prisma
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Catálogo de Hitos Históricos
+model Hito {
+  id                 Int      @id @default(autoincrement())
+  nombre             String
+  tipo               String   // Colonial, Prehispánico, Republicano, Tradicional, Cultural
+  xp                 Int      // Puntos de XP otorgados
+  lat                Float    // Latitud
+  lon                Float    // Longitud
+  radioDesbloqueo    Float    @default(100.0) // En metros (configurable por hito)
+  pista              String   // Pista parcial antes de desbloquear
+  descripcionCompleta String  // Revelado solo al visitar
+  imagenUrl          String?  // Foto oficial del hito
+  visitas            Visita[]
+}
+
+// Usuarios y Gamificación
+model Usuario {
+  id        Int      @id @default(autoincrement())
+  username  String   @unique
+  xp        Int      @default(0)
+  nivel     Int      @default(1)
+  createdAt DateTime @default(now())
+  visitas   Visita[]
+}
+
+// Bitácora del Viajero (Visitas Verificadas)
+model Visita {
+  id             Int      @id @default(autoincrement())
+  usuarioId      Int
+  hitoId         Int
+  fecha          DateTime @default(now())
+  verificadoCon  String   // "GPS" o "FOTO"
+  
+  usuario        Usuario  @relation(fields: [usuarioId], references: [id])
+  hito           Hito     @relation(fields: [hitoId], references: [id])
+
+  @@unique([usuarioId, hitoId])
+}
+
+// Recolección y Análisis de Movilidad Anónima (Ley N° 29733)
+model RegistroUbicacionAnonimo {
+  id        Int      @id @default(autoincrement())
+  lat       Float
+  lon       Float
+  timestamp DateTime @default(now())
+  sessionId String
+}
