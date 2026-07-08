@@ -7,7 +7,7 @@ import MapView, { Marker, PROVIDER_DEFAULT } from 'react-native-maps';
 // - Si usas emulador Android (AVD): usa 'http://10.0.2.2:3000/api'
 // - Si usas emulador iOS / Web: usa 'http://localhost:3000/api'
 // - Si usas celular físico con Expo Go: usa la IP local de tu PC (ej. 'http://192.168.1.50:3000/api')
-const API_URL = 'http://localhost:3000/api';
+const API_URL = process.env.EXPO_PUBLIC_API_URL || 'http://localhost:3000/api';
 const DEFAULT_USERNAME = 'LeonardoSolis'; // Usuario por defecto para el avance
 
 export default function App() {
