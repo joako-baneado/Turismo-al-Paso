@@ -29,7 +29,7 @@ El proyecto está dividido en un frontend móvil y un backend de servicios:
 ### Backend (API REST y Base de Datos)
 *   **Runtime:** [Node.js](https://nodejs.org/) con [Express.js](https://expressjs.com/).
 *   **ORM:** [Prisma ORM](https://www.prisma.io/).
-*   **Base de Datos:** [SQLite](https://www.sqlite.org/) (ideal para entornos de desarrollo y pruebas rápidas).
+*   **Base de Datos:** [PostgreSQL](https://www.postgresql.org/) (Alojada de forma remota en [Supabase](https://supabase.com/)).
 
 ---
 
@@ -81,24 +81,24 @@ Asegúrate de tener instalados los siguientes componentes:
     ```bash
     npm install
     ```
-3.  Crea un archivo `.env` en la raíz de la carpeta `backend` (puedes duplicar el archivo `.env.example`):
+3.  Crea un archivo `.env` en la raíz de la carpeta `backend` (puedes basarte en el archivo `.env.example`):
     ```env
-    DATABASE_URL="file:./dev.db"
     PORT=3000
+    DATABASE_URL="postgresql://postgres.[ID_PROYECTO]:[PASSWORD]@aws-0-[REGION].pooler.supabase.com:5432/postgres"
     ```
-4.  Ejecuta las migraciones de Prisma para configurar la base de datos SQLite:
+4.  Sincroniza el esquema del modelo con tu base de datos remota de Supabase:
     ```bash
-    npm run prisma:migrate
+    npx prisma db push
     ```
-5.  Puebla la base de datos con los hitos históricos iniciales (script seed):
+5.  Puebla la base de datos con los 50 hitos históricos iniciales (script seed):
     ```bash
     npm run db:seed
     ```
-6.  Inicia el servidor en modo desarrollo:
+6.  Inicia el servidor en modo desarrollo local:
     ```bash
     npm run dev
     ```
-    *El backend estará disponible en `http://localhost:3000`.*
+    *El backend estará disponible localmente en `http://localhost:3000`.*
 
 ---
 
@@ -112,17 +112,21 @@ Asegúrate de tener instalados los siguientes componentes:
     ```bash
     npm install
     ```
-3.  **Configura la IP de conexión:**
+3.  **Configura la URL de conexión de la API:**
     Crea un archivo `.env` en la raíz de la carpeta `MiAppTurismo` (puedes duplicar el archivo `.env.example`) y define el valor de `EXPO_PUBLIC_API_URL` según tu entorno:
-    *   **Si usas emulador Android (AVD):**
+    *   **Para producción (Servidor en Render):**
+        ```env
+        EXPO_PUBLIC_API_URL=https://turismo-al-paso.onrender.com/api
+        ```
+    *   **Para desarrollo con emulador Android (AVD):**
         ```env
         EXPO_PUBLIC_API_URL=http://10.0.2.2:3000/api
         ```
-    *   **Si usas emulador iOS o navegador web:**
+    *   **Para desarrollo con emulador iOS o navegador web:**
         ```env
         EXPO_PUBLIC_API_URL=http://localhost:3000/api
         ```
-    *   **Si usas un dispositivo móvil físico con Expo Go:** Usa la IP local de tu computadora en la red Wi-Fi:
+    *   **Para desarrollo con celular físico en Expo Go:** Usa la IP local de tu PC en la red Wi-Fi:
         ```env
         EXPO_PUBLIC_API_URL=http://192.168.1.50:3000/api
         ```
@@ -131,6 +135,25 @@ Asegúrate de tener instalados los siguientes componentes:
     npm start
     ```
 5.  Escanea el código QR generado desde la consola con la cámara de tu celular (iOS) o desde la aplicación Expo Go (Android) para ejecutar la app.
+
+---
+
+### 🚀 3. Despliegue en la Nube (Producción)
+
+El proyecto está configurado para desplegarse de manera automatizada usando **Supabase** y **Render**:
+
+#### Base de Datos (Supabase)
+1. Crea un proyecto en [Supabase](https://supabase.com/).
+2. Copia la cadena de conexión URI en **Project Settings** -> **Database** (elige la conexión directa en el puerto `5432`).
+3. Reemplaza la contraseña de tu base de datos y configúrala como `DATABASE_URL` en el archivo `.env` o en las variables de Render.
+
+#### Servidor Web (Render)
+1. Crea un **Web Service** en [Render](https://render.com/) apuntando al repositorio de GitHub.
+2. Configura los siguientes parámetros en el panel:
+   * **Root Directory:** `backend`
+   * **Build Command:** `npm install && npm run build`
+   * **Start Command:** `npx prisma db push --accept-data-loss && npm run db:seed && npm start`
+   * **Variables de Entorno:** Añade la variable `DATABASE_URL` con tu cadena de conexión directa de Supabase (puerto `5432`).
 
 ---
 
