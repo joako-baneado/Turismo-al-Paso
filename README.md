@@ -1,4 +1,4 @@
-# 🤠 Turismo al Paso
+# Turismo al Paso
 
 **Turismo al Paso** es una plataforma móvil diseñada para fomentar el turismo histórico de nicho en Lima Metropolitana. A través de la combinación de **servicios basados en localización (LBS)** y elementos de **gamificación**, la aplicación transforma la experiencia del turista o ciudadano en una aventura interactiva para redescubrir la riqueza patrimonial de distritos históricos como Pueblo Libre, Rímac y San Juan de Lurigancho.
 
@@ -6,18 +6,18 @@ Este proyecto forma parte de los entregables del curso de Gerencia de Proyectos 
 
 ---
 
-## 🚀 Características Principales
+## Características Principales
 
-*   **📍 Mapa Patrimonial Interactivo:** Visualización en tiempo real de más de 50 hitos y monumentos históricos en Lima.
-*   **🎮 Gamificación (XP y Niveles):** Los usuarios ganan puntos de experiencia (XP) y suben de nivel al visitar lugares históricos.
-*   **🛰️ Verificación Geográfica (LBS):** Validación automatizada por GPS que detecta si el usuario está dentro del radio de desbloqueo (100 metros) del monumento.
-*   **📸 Contingencia de Verificación:** En caso de fallas de precisión del GPS, el sistema permite la verificación de visitas mediante la toma de fotografías.
-*   **🔒 Privacidad de Datos:** Recopilación de datos de movilidad de forma 100% anónima, en estricto cumplimiento con la **Ley Peruana N° 29733** (Ley de Protección de Datos Personales).
-*   **📖 Bitácora del Viajero:** Registro histórico digital que desbloquea información detallada del monumento únicamente después de haber validado la visita.
+*   **Mapa Patrimonial Interactivo:** Visualización en tiempo real de más de 50 hitos y monumentos históricos en Lima.
+*   **Gamificación (XP y Niveles):** Los usuarios ganan puntos de experiencia (XP) y suben de nivel al visitar lugares históricos.
+*   **Verificación Geográfica (LBS):** Validación automatizada por GPS que detecta si el usuario está dentro del radio de desbloqueo (100 metros) del monumento.
+*   **Contingencia de Verificación:** En caso de fallas de precisión del GPS, el sistema permite la verificación de visitas mediante la toma de fotografías.
+*   **Privacidad de Datos:** Recopilación de datos de movilidad de forma 100% anónima, en estricto cumplimiento con la **Ley Peruana N° 29733** (Ley de Protección de Datos Personales).
+*   **Bitácora del Viajero:** Registro histórico digital que desbloquea información detallada del monumento únicamente después de haber validado la visita.
 
 ---
 
-## 🛠️ Arquitectura y Stack Tecnológico
+## Arquitectura y Stack Tecnológico
 
 El proyecto está dividido en un frontend móvil y un backend de servicios:
 
@@ -33,7 +33,7 @@ El proyecto está dividido en un frontend móvil y un backend de servicios:
 
 ---
 
-## 📂 Estructura del Repositorio
+## Estructura del Repositorio
 
 ```text
 Turismo-al-Paso/
@@ -62,7 +62,7 @@ Turismo-al-Paso/
 
 ---
 
-## ⚙️ Instalación y Configuración
+## Instalación y Configuración
 
 ### Requisitos Previos
 Asegúrate de tener instalados los siguientes componentes:
@@ -138,7 +138,7 @@ Asegúrate de tener instalados los siguientes componentes:
 
 ---
 
-### 🚀 3. Despliegue en la Nube (Producción)
+### 3. Despliegue en la Nube (Producción)
 
 El proyecto está configurado para desplegarse de manera automatizada usando **Supabase** y **Render**:
 
@@ -157,7 +157,7 @@ El proyecto está configurado para desplegarse de manera automatizada usando **S
 
 ---
 
-## 👥 Equipo del Proyecto (Grupo 1)
+## Equipo del Proyecto (Grupo 1)
 
 *   **Leonardo Jose Solis Solis**
 *   **Fabian Rojas Cuadros**
